@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Taskie - My Tasks</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --taskie-peach: #E59A7D; --taskie-peach-light: #FFDDCC; --taskie-bg: #FAF9F6; --taskie-text: #2D3436; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #FAF3E8; color: var(--taskie-text); min-height: 100vh; }
+        #sidebar { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); min-width: 280px; min-height: 100vh; border-right: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+        .sidebar-brand { padding: 2.5rem 1.5rem; display: flex; align-items: center; }
+        .brand-logo-box { background-color: var(--taskie-peach); width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 16px rgba(229, 154, 125, 0.4); }
+        .brand-name { font-size: 1.8rem; font-weight: 800; letter-spacing: -1.2px; margin-left: 14px; }
+        .nav-link { color: #8e8e8e; margin: 8px 20px; border-radius: 12px; font-weight: 600; padding: 12px 15px; text-decoration: none; }
+        .nav-link.active { background-color: var(--taskie-peach-light); color: var(--taskie-peach); }
+        .page-header { padding: 2rem; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); border-radius: 30px; margin: 1.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
+        .task-container { background: white; border-radius: 30px; padding: 35px; box-shadow: 0 15px 50px rgba(0,0,0,0.03); }
+        .btn-peach { background: linear-gradient(135deg, #E59A7D 0%, #D17A5A 100%); border: none; border-radius: 50px; padding: 12px 28px; font-weight: 700; color: white; transition: 0.3s; }
+        .badge-upcoming { background-color: #FEEBC8; color: #975A16; border-radius: 8px; padding: 6px 12px; }
+        .badge-progress { background-color: #EBF8FF; color: #2B6CB0; border-radius: 8px; padding: 6px 12px; }
+        .badge-completed { background-color: #C6F6D5; color: #276749; border-radius: 8px; padding: 6px 12px; }
+        .btn-action { width: 32px; height: 32px; border-radius: 8px; border: none; background: #f8f9fa; transition: 0.2s; }
+        .btn-action:hover { transform: scale(1.1); }
+        @media (max-width: 768px) { #sidebar { display: none; } }
+    </style>
+</head>
+<body>
+
+<div class="d-flex">
+    <nav id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-logo-box"><i class="fas fa-clipboard-list text-white"></i></div>
+            <span class="brand-name">Taskie</span>
+        </div>
+        <ul class="nav flex-column mt-2">
+            <li><a class="nav-link" href="dashboard.html"><i class="fas fa-th-large me-2"></i> Dashboard</a></li>
+            <li><a class="nav-link active" href="tasks.html"><i class="fas fa-list me-2"></i> My Tasks</a></li>
+            <li><a class="nav-link" href="projects.html"><i class="fas fa-folder me-2"></i> Projects</a></li>
+        </ul>
+    </nav>
+
+    <div class="w-100">
+        <div class="page-header d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="fw-bold mb-1">My Tasks</h1>
+                <p class="text-muted mb-0">Manage your assignments</p>
+            </div>
+            <button class="btn btn-peach" data-bs-toggle="modal" data-bs-target="#addTaskModal"><i class="fas fa-plus me-2"></i>Add Task</button>
+        </div>
+
+        <div class="container-fluid px-4">
+            <div class="task-container">
+                <table class="table table-hover align-middle" id="taskTable">
+                    <thead>
+                        <tr class="text-muted small">
+                            <th>TASK NAME</th><th>NOTES</th><th>DUE DATE</th><th>STATUS</th><th class="text-end">ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="taskTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="addTaskModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-4 border-0" style="border-radius: 25px;">
+            <h5 class="fw-bold mb-4">Add New Task</h5>
+            <form id="taskForm">
+                <div class="mb-3"><label class="small fw-bold">NAME</label><input type="text" id="taskName" class="form-control" required></div>
+                <div class="mb-3"><label class="small fw-bold">NOTES</label><input type="text" id="taskNote" class="form-control"></div>
+                <div class="mb-3"><label class="small fw-bold">DATE</label><input type="date" id="taskDate" class="form-control" required></div>
+                <div class="mb-3"><label class="small fw-bold">STATUS</label>
+                    <select id="taskStatus" class="form-select">
+                        <option value="Upcoming">Upcoming</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-peach w-100 rounded-pill">Save Task</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Initial data if storage is empty
+    let tasks = JSON.parse(localStorage.getItem('myTasks')) || [
+        { name: "Submission of IMS566 Project", note: "Web Design", date: "2025-12-30", status: "In Progress" },
+        { name: "Final Test Study Session", note: "PTA", date: "2025-01-12", status: "Upcoming" },
+        { name: "IMS560 Lab Test", note: "Database", date: "2025-01-06", status: "Upcoming" },
+        { name: "SISMA Club Meeting", note: "Student Council", date: "2024-12-10", status: "Completed" },
+        { name: "Internship Application", note: "Career Portal", date: "2025-01-15", status: "Upcoming" },
+        { name: "Group Project Discussion", note: "IS PM", date: "2024-12-30", status: "In Progress" },
+        { name: "Library Book Return", note: "PTA", date: "2024-12-31", status: "Upcoming" }
+    ];
+
+    function saveAndRender() {
+        localStorage.setItem('myTasks', JSON.stringify(tasks));
+        const tbody = document.getElementById('taskTableBody');
+        tbody.innerHTML = '';
+        tasks.forEach((task, index) => {
+            const badgeClass = task.status === 'Upcoming' ? 'badge-upcoming' : (task.status === 'In Progress' ? 'badge-progress' : 'badge-completed');
+            tbody.innerHTML += `
+                <tr>
+                    <td><span class="fw-bold">${task.name}</span></td>
+                    <td>${task.note}</td>
+                    <td>${task.date}</td>
+                    <td><span class="badge ${badgeClass}">${task.status}</span></td>
+                    <td class="text-end">
+                        <button class="btn-action text-success" onclick="completeTask(${index})"><i class="fas fa-check"></i></button>
+                        <button class="btn-action text-danger" onclick="deleteTask(${index})"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>`;
+        });
+    }
+
+    document.getElementById('taskForm').onsubmit = (e) => {
+        e.preventDefault();
+        tasks.push({
+            name: document.getElementById('taskName').value,
+            note: document.getElementById('taskNote').value,
+            date: document.getElementById('taskDate').value,
+            status: document.getElementById('taskStatus').value
+        });
+        saveAndRender();
+        bootstrap.Modal.getInstance(document.getElementById('addTaskModal')).hide();
+    };
+
+    window.completeTask = (index) => { tasks[index].status = 'Completed'; saveAndRender(); };
+    window.deleteTask = (index) => { if(confirm("Delete?")) { tasks.splice(index, 1); saveAndRender(); } };
+
+    saveAndRender();
+</script>
+</body>
+</html>
