@@ -1,6 +1,6 @@
 # 📝 Taskie - Student Task Management System
 
-**Taskie** is a modern, clean, and intuitive task management web application designed specifically for university students. It helps users organize assignments, track project progress, and maintain focus using the Pomodoro technique.
+**Taskie** is a modern, clean, and intuitive task management web application designed specifically for university students. It helps users organize assignments and track project progress.
 
 ---
 
